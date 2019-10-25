@@ -14,9 +14,11 @@ CC	= gcc
 CFLAGS	= -Wall -Wextra -Werror
 AR	= ar rcs
 RANLIB = ranlib
+S-DIR = ./srcs/
+I-DIR = ./includes/
 
 NAME	= libft.a
-HEAD	= libft.h
+HEAD	= libft.h get_next_line.h
 SRCS	= ft_memset.c ft_bzero.c	\
 		  ft_memcpy.c ft_memccpy.c	\
 		  ft_memmove.c ft_memchr.c	\
@@ -40,7 +42,8 @@ SRCS	= ft_memset.c ft_bzero.c	\
 		  ft_putnbr_fd.c ft_lstnew.c ft_lstdelone.c			\
 		  ft_lstdel.c ft_lstadd.c ft_lstiter.c ft_lstmap.c	\
 		  ft_lstfold.c ft_nbrlen.c ft_wordcount.c \
-		  ft_wordlen.c ft_iswspace.c ft_isspace.c
+		  ft_wordlen.c ft_iswspace.c ft_isspace.c \
+		  get_next_line.c
 
 OBJS	= $(SRCS:.c=.o)
 
@@ -49,7 +52,7 @@ OBJS	= $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME):
-	@$(CC) $(CFLAGS) -c $(SRCS)
+	@$(CC) $(CFLAGS) -I ./includes/*.o -c ./srcs/*.c
 	@$(AR) $(NAME) $(OBJS)
 	@$(RANLIB) $(NAME)
 	@echo "[INFO] Library [$(NAME)] created!"
