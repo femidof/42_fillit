@@ -12,56 +12,132 @@
 
 #include "fillit.h"
 #include <stdio.h>
+# define INVALID_FILE -1;
 
-int is_4x4(char **tetris)
+typedef struct t_node
 {
-	int x;
+	char			*data[4][5];
+	char			**points;
+	struct	t_node	*next;
+}					node;
+
+// int check
+
+node *create_node()
+{
+	node *new = ft_memalloc(sizeof(*new));
+
+	new->next = NULL;
+	new->points = ft_memalloc(sizeof(new->points) * 4);
+	return new;
+}
+
+void	append_node(node **head, node *add)
+{
+	if (!head)
+		return ;
+	if (*head == NULL)
+		*head = add;
+	else
+	{
+		add->next = *head;
+		*head = add;
+	}
+}
+
+void	print_linkedlist(node *tetriminos)
+{
+	node *head;
+	int line; 
+	int row;
 	
-	x = 0;
-	while (tetris[x])
+	head = ft_memalloc(sizeof(*head));
+	head = tetriminos;
+	line = 0;
+	row = 0;
+	while (head)
 	{
-		if (ft_strlen(tetris[x]) != 4)
-			return (0);
-	}
-	return (1);
-}
-
-int is_valid_symbols(char **tetris)
-{
-	int x;
-	int y;
-
-	x = 0;
-	y = 0;
-	while (tetris[x])
-	{
-		while(tetris[x][y])
+		while(head->data)
 		{
-			if (tetris[x][y] != '.' && tetris[x][y] != '#')
-				return (0);
-			y++;
+			printf("%s\n", head->data);
+			row++;
 		}
-		x++;
+		head = head->next;
+	
 	}
-	return (1);
 }
 
-int	count_tetris(int argc, char **argv)
+int	create_tetriminos(int fd, node **tetriminos)
 {
-	// fd = open(argv[argc - 1], O_RDONLY);
-	return 1;
+	char *line;
+	int col = 0;
+	int row = 0;
+	int tetris_line_count = 0;
+	int tetris_count = 0;
+	node *new;
+	while (get_next_line(fd, &line))
+	{		
+		if ((strlen(line) != 4) && !(ft_strcmp(line, "") == 0))
+		{
+			// printf("\n---Line: %s\n", line);
+			// printf("\n---Chars: %zu\n", strlen(line));
+			// printf("\n---Cmp: %d\n", ft_strcmp(line, ""));
+			// printf("\nReturned @ if (!(strlen(line) == 4) && !(ft_strcmp(line, "") == 0))\n");
+			return (-1);
+		}
+		while (line[col])
+		{
+			if (line[col] != '.' && line[col] != '#')
+			{
+				// printf("\nReturned @ if (line[col] != '.' && line[col] != '#')\n");
+				return INVALID_FILE;
+			}
+			col++;
+		}
+		row++;
+		if (row > 26)
+			return INVALID_FILE;
+		if (ft_strcmp (line, "") == 0)
+		{
+			if (tetris_line_count == 1)
+			{
+				// printf("\nReturned @ if (tetris_line_count == 1)\n");
+				return INVALID_FILE;
+			}
+			tetris_line_count++;
+			node *new = create_node();
+			append_node(tetriminos, new);
+			tetris_line_count = 0;
+			tetris_count++;
+			if (row != 5)
+			{
+				// printf("\nReturned @ if (row != 5)\n");
+				return INVALID_FILE;
+			}
+			row = 0;
+		}
+		else
+		{
+			(*tetriminos->data)[row] = ft_strjoin((*tetriminos->data)[row], line);
+		}
+	}
+	return (0);
 }
+
+// int is_valid_line(char *line)
+// {
+// 	if ((int)ft_strlen(line) != 4)
+// 	{
+// 		return (0);
+// 	}
+// 	return (1);	
+// }
 
 int main(int argc, char **argv)
 {
 	int fd;
-	char *line;
-	char **store;
-	int total_chars;
-	int total_lines;
-	int i = 0;
-
-	total_lines = 0;
+	node *tetriminos = create_node();
+	
 	if (argc != 2)
 	{
 		ft_putstr("usage: fillit input_file\n");
@@ -69,30 +145,12 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-		fd = open(argv[argc - 1], O_RDONLY);
-		while(get_next_line(fd, &line))
-		{
-			total_chars += ft_strlen(line); //90 chars
-			total_lines++; //22 lines
-		}
-		close(fd);
-		printf("%d", total_lines);
-		fd = open(argv[argc - 1], O_RDONLY);
-		store = ft_memalloc((total_lines + 1)* sizeof(char *));
-		while(get_next_line(fd, &line))00
-		{
-			store[i] = ft_strdup(line);
-			printf("%s", store[i]);
-			i++;
-		}
+		fd = open(argv[1], O_RDONLY);
+		// check_file(fd, &tetriminos);
+		create_tetriminos(fd, &tetriminos);
+		print_linkedlist(tetriminos);
+		// solve_tetriminos (tetriminos);
 		close(fd);
 	}
-	// close(fd);
-	// i = 0;
-	// // while(store[i])
-	// // {
-	// // 	printf("%s\n", store[i]);
-	// // 	i++;
-	// // }
 	return (0);
 }
