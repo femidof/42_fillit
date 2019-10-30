@@ -21,8 +21,8 @@ typedef struct t_node
 	struct	t_node	*next;
 }					node;
 
-// int check
 
+// int check
 node *create_node()
 {
 	node *new = ft_memalloc(sizeof(*new));
@@ -75,6 +75,7 @@ int	create_tetriminos(int fd, node **tetriminos)
 	int tetris_line_count = 0;
 	int tetris_count = 0;
 	node *new;
+	ft_lstnew(,4);
 	while (get_next_line(fd, &line))
 	{		
 		if ((strlen(line) != 4) && !(ft_strcmp(line, "") == 0))
@@ -82,7 +83,7 @@ int	create_tetriminos(int fd, node **tetriminos)
 			// printf("\n---Line: %s\n", line);
 			// printf("\n---Chars: %zu\n", strlen(line));
 			// printf("\n---Cmp: %d\n", ft_strcmp(line, ""));
-			// printf("\nReturned @ if (!(strlen(line) == 4) && !(ft_strcmp(line, "") == 0))\n");
+			// printf("\nReturned @ if (!(strlen(line) == 4) && !(ft_strcmp(line, "") == 0))\n");`
 			return (-1);
 		}
 		while (line[col])
