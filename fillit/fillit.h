@@ -21,4 +21,8 @@
 # include <sys/uio.h>
 // # define 
 
+typedef struct the_map{
+    char **map;
+}t_map;
+
 #endif
