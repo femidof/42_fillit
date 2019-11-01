@@ -33,11 +33,14 @@ void	append_node(tetris **head, tetris *add)
 	if (!head)
 		return ;
 	if (*head == NULL)
+	{
 		*head = add;
+		(*head)->next = NULL;	//what do you think about this line
+	}
 	else
 	{
-		add->next = *head;
-		*head = add;
+		add->next = *head; // I THINK THIS SHOULD BE HEAD->NEXT COS WE ARE SPPOSED TO MOVE TO NEXT HEAD OF TETRIS OR WHAT DO YOU THINK
+		*head = add;	
 	}
 }
 
@@ -128,6 +131,7 @@ int		create_tetriminos(int fd, tetris **linked_list)
 			tetris *new = malloc(sizeof(*new));
 			append_node(linked_list, new);
 			newline_count = 0;
+			
 			pieces_count++;
 			row = 0;
 		}
