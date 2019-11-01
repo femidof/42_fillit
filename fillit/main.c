@@ -16,8 +16,8 @@
 
 typedef struct		t_points
 {
-	int				x;
-	int				y;
+	int				row;
+	int				col;
 }					points;
 
 typedef struct		t_list
@@ -97,12 +97,12 @@ int		create_tetriminos(int fd, tetris **linked_list)
 				printf("if (line[col] != '.' && line[col] != '#')");
 				return INVALID_FILE;
 			}
-			(*linked_list)->pts[col].x = col; // assigning each colomn to x
+			(*linked_list)->pts[col].col = col; // assigning each colomn to x
 			col++;
 		}
 		total_lines++;
 			// printf("%d \n",(*linked_list)->pts[row].x);
-		printf("%s, %d, %d, %d\n", line, newline_count, (*linked_list)->pts[row].x, row);
+		printf("%s, %d, %d, %d\n", line, newline_count, (*linked_list)->pts[row].col, row);
 		if (total_lines > 26)
 		{
 			printf("if (total_lines > 26)");
