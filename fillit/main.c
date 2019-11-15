@@ -91,12 +91,12 @@ int		create_tetriminos(int fd, tetris **linked_list)
 	int pieces_count = 0;
 	while (get_next_line(fd, &line))
 	{
-		// if ((strlen(line) != 4) && !(ft_strcmp(line, "") == 0))
-		// {
-		// 	printf("if ((strlen(line) != 4) && !(ft_strcmp(line, "") == 0))");
-		// 	return (-1);
-		// }
-		// col = 0;	// resetting the column back to zero after every counts for each line
+		if ((strlen(line) != 4) && !(ft_strcmp(line, "") == 0))
+		{
+			printf("if ((strlen(line) != 4) && !(ft_strcmp(line, "") == 0))");
+		 	return (-1);
+		}
+		 col = 0;	// resetting the column back to zero after every counts for each line
 		// while (line[col])
 		// {
 		// 	if (line[col] != '.' && line[col] != '#')
