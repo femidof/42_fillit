@@ -30,6 +30,7 @@ typedef struct		t_list
 
 void	append_node(tetris **head, tetris *add)
 {
+	tetris *temp;
 	if (!head)
 		return ;
 	if (*head == NULL)
@@ -39,6 +40,9 @@ void	append_node(tetris **head, tetris *add)
 	}
 	else
 	{
+		*temp = **head;
+		while (temp->next != NULL)
+			temp = temp->next;
 		add->next = *head; // I THINK THIS SHOULD BE HEAD->NEXT COS WE ARE SPPOSED TO MOVE TO NEXT HEAD OF TETRIS OR WHAT DO YOU THINK
 		*head = add;	
 	}
@@ -87,60 +91,61 @@ int		create_tetriminos(int fd, tetris **linked_list)
 	int pieces_count = 0;
 	while (get_next_line(fd, &line))
 	{
-		if ((strlen(line) != 4) && !(ft_strcmp(line, "") == 0))
-		{
-			printf("if ((strlen(line) != 4) && !(ft_strcmp(line, "") == 0))");
-			return (-1);
-		}
-		col = 0;	// resetting the column back to zero after every counts for each line
-		while (line[col])
-		{
-			if (line[col] != '.' && line[col] != '#')
-			{
-				printf("if (line[col] != '.' && line[col] != '#')");
-				return INVALID_FILE;
-			}
-			(*linked_list)->pts[col].col = col; // assigning each colomn to x
-			col++;
-		}
-		total_lines++;
-			// printf("%d \n",(*linked_list)->pts[row].x);
+		// if ((strlen(line) != 4) && !(ft_strcmp(line, "") == 0))
+		// {
+		// 	printf("if ((strlen(line) != 4) && !(ft_strcmp(line, "") == 0))");
+		// 	return (-1);
+		// }
+		// col = 0;	// resetting the column back to zero after every counts for each line
+		// while (line[col])
+		// {
+		// 	if (line[col] != '.' && line[col] != '#')
+		// 	{
+		// 		printf("if (line[col] != '.' && line[col] != '#')");
+		// 		return INVALID_FILE;
+		// 	}
+		// 	(*linked_list)->pts[col].col = col; // assigning each colomn to x
+		// 	col++;
+		// }
+		// total_lines++;
+		// 	// printf("%d \n",(*linked_list)->pts[row].x);
 		printf("%s, %d, %d, %d\n", line, newline_count, (*linked_list)->pts[row].col, row);
-		if (total_lines > 26)
-		{
-			printf("if (total_lines > 26)");
-			return INVALID_FILE;
-		}
-		if (ft_strcmp (line, "") == 0)
-		{
-			if (newline_count == 1)
-			{
-				printf("if (newline_count == 1)");
-				return INVALID_FILE;
-			}
-			newline_count++;
-		}
-		else if (newline_count == 1)
-		{
-			if (row != 3)
-			{	
-				printf("%d", row);
-				printf("	if (row != 3)");
-				return INVALID_FILE;
-			}
-			tetris *new = malloc(sizeof(*new));
-			append_node(linked_list, new);
-			newline_count = 0;
+		// if (total_lines > 26)
+		// {
+		// 	printf("if (total_lines > 26)");
+		// 	return INVALID_FILE;
+		// }
+		// if (ft_strcmp (line, "") == 0)
+		// {
+		// 	if (newline_count == 1)
+		// 	{
+		// 		printf("if (newline_count == 1)");
+		// 		return INVALID_FILE;
+		// 	}
+		// 	newline_count++;
+		// }
+		// else if (newline_count == 1)
+		// {
+		// 	if (row != 3)
+		// 	{	
+		// 		printf("%d", row);
+		// 		printf("	if (row != 3)");
+		// 		return INVALID_FILE;
+		// 	}
+		// 	tetris *new = malloc(sizeof(*new));
+		// 	append_node(linked_list, new);
+		// 	newline_count = 0;
 			
-			pieces_count++;
-			row = 0;
-		}
-	    else 
-		{
-			((*linked_list)->data)[row] = line;
-			row++;
-		}
+		// 	pieces_count++;
+		// 	row = 0;
+		// }
+	    // else 
+		// {
+		// 	((*linked_list)->data)[row] = line;
+		// 	row++;
+		// }
 	}
+	free(line);
 	return (0);
 }
 
@@ -156,7 +161,16 @@ int		main(int argc, char **argv)
 		return (2);
 	}
 	fd = open (argv[1], O_RDONLY);
-	create_tetriminos(fd, &linked_list);
+	if (fd != -1)
+	{
+		create_tetriminos(fd, &linked_list);
+	}
+	else
+	{
+		ft_putstr("usage: no such input_file\n");
+		return (2);
+	}
+	
 	// print_linkedlist(linked_list);
 	// if (create_tetriminos(fd, &linked_list) == -1)
 	// {
