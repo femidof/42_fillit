@@ -158,7 +158,7 @@ int		main(int argc, char **argv)
 	if (argc != 2)
 	{
 		ft_putstr("usage: fillit input_file\n");
-		return (2);
+		return (-1);
 	}
 	fd = open (argv[1], O_RDONLY);
 	if (fd != -1)
@@ -168,7 +168,7 @@ int		main(int argc, char **argv)
 	else
 	{
 		ft_putstr("usage: no such input_file\n");
-		return (2);
+		return (-1);
 	}
 	
 	// print_linkedlist(linked_list);
