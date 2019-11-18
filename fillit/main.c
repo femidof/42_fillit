@@ -86,7 +86,7 @@ int		create_tetriminos(int fd, tetris **linked_list)
 	char *line;
 	int col;
 	int row = 0;
-	int total_lines = 0;
+	static int total_lines = 0;
 	int newline_count = 0;
 	int pieces_count = 0;
 	while (get_next_line(fd, &line))
@@ -97,19 +97,22 @@ int		create_tetriminos(int fd, tetris **linked_list)
 		 	return (-1);
 		}
 		 col = 0;	// resetting the column back to zero after every counts for each line
-		// while (line[col])
-		// {
-		// 	if (line[col] != '.' && line[col] != '#')
-		// 	{
-		// 		printf("if (line[col] != '.' && line[col] != '#')");
-		// 		return INVALID_FILE;
-		// 	}
-		// 	(*linked_list)->pts[col].col = col; // assigning each colomn to x
-		// 	col++;
-		// }
-		// total_lines++;
-		// 	// printf("%d \n",(*linked_list)->pts[row].x);
-		printf("%s, %d, %d, %d\n", line, newline_count, (*linked_list)->pts[row].col, row);
+		while (line[col])
+		{
+			if (line[col] != '.' && line[col] != '#')
+			{
+				printf("if (line[col] != '.' && line[col] != '#')");
+				return INVALID_FILE;
+			}
+			(*linked_list)->pts[col].col = col; // assigning each colomn to x
+			printf("---%d \n",(*linked_list)->pts[col].col);
+			col++;
+		}
+		// printf("~~~%d~~~\n", col);
+		total_lines++;
+		newline_count++;
+		printf("%s %d, %d, %d\n", line, newline_count, (*linked_list)->pts[3].col, row);
+		
 		// if (total_lines > 26)
 		// {
 		// 	printf("if (total_lines > 26)");
@@ -181,4 +184,15 @@ int		main(int argc, char **argv)
 	// free_linkedlist(&t_list);
 	close(fd);
 	return (0);
+
+	tetris linked_list1;
+	linked_list1.data["...#", "...#", "...#", "...#"]
+	linekd_list1.pts[(points){3,0}, (points){3,0}, (points){3,0}, (points){3,0}];
+	linked_list1.next = linked_list2;
+
+	tetris linked_list2;
+	linked_list1.data["....", "...#", "...#", "...#"]
+	linekd_list1.pts[(points){3,0}, (points){3,0}, (points){3,0}, (points){3,0}];
+	linked_list1.next = linked_list2;
+	
 }
