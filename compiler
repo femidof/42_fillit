@@ -1,2 +1,2 @@
 gcc -L ./../libft/ -lft fillit.c main.c
- ./a.out valid_sample.txt
+./a.out valid_sample.txt

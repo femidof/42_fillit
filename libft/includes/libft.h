@@ -109,5 +109,8 @@ size_t				ft_wordlen(const char *s, char c);
 size_t				ft_wordcount(const char *s, char c);
 int					ft_iswspace(int c);
 int					t_isspace(int c);
+t_list				*ft_lstinit(void *content, size_t content_size);
+int					ft_lstlen(t_list *list);
+
 
 #endif

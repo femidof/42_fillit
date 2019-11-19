@@ -110,9 +110,8 @@ int		create_tetriminos(int fd, tetris **linked_list)
 		}
 		// printf("~~~%d~~~\n", col);
 		total_lines++;
+		printf("%s %d, %d, %d\n", line, newline_count, (*linked_list)->pts[3].col, row);		
 		newline_count++;
-		printf("%s %d, %d, %d\n", line, newline_count, (*linked_list)->pts[3].col, row);
-		
 		// if (total_lines > 26)
 		// {
 		// 	printf("if (total_lines > 26)");
@@ -185,14 +184,13 @@ int		main(int argc, char **argv)
 	close(fd);
 	return (0);
 
-	tetris linked_list1;
-	linked_list1.data["...#", "...#", "...#", "...#"]
-	linekd_list1.pts[(points){3,0}, (points){3,0}, (points){3,0}, (points){3,0}];
-	linked_list1.next = linked_list2;
+	// tetris linked_list1;
+	// linked_list1.data["...#", "...#", "...#", "...#"]
+	// linekd_list1.pts[(points){3,0}, (points){3,0}, (points){3,0}, (points){3,0}];
+	// linked_list1.next = linked_list2;
 
-	tetris linked_list2;
-	linked_list1.data["....", "...#", "...#", "...#"]
-	linekd_list1.pts[(points){3,0}, (points){3,0}, (points){3,0}, (points){3,0}];
-	linked_list1.next = linked_list2;
-	
+	// tetris linked_list2;
+	// linked_list1.data["....", "...#", "...#", "...#"]
+	// linekd_list1.pts[(points){3,0}, (points){3,0}, (points){3,0}, (points){3,0}];
+	// linked_list1.next = linked_list2;
 }
