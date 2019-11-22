@@ -81,7 +81,7 @@ void	free_linkedlist(tetris **list)
 	*list = NULL;
 }
 
-int		create_tetriminos(int fd, tetris **linked_list)
+int		**create_tetriminos(int fd, tetris **linked_list)
 {
 	char *line;
 	int col;
@@ -89,12 +89,14 @@ int		create_tetriminos(int fd, tetris **linked_list)
 	static int total_lines = 0;
 	int newline_count = 0;
 	int pieces_count = 0;
+	tetris *head = *linked_list;
 	while (get_next_line(fd, &line))
 	{
 		if ((strlen(line) != 4) && !(ft_strcmp(line, "") == 0))
 		{
 			printf("if ((strlen(line) != 4) && !(ft_strcmp(line, "") == 0))");
-		 	return (-1);
+		 	//return (-1);
+			 break;
 		}
 		 col = 0;	// resetting the column back to zero after every counts for each line
 		while (line[col])
@@ -102,7 +104,8 @@ int		create_tetriminos(int fd, tetris **linked_list)
 			if (line[col] != '.' && line[col] != '#')
 			{
 				printf("if (line[col] != '.' && line[col] != '#')");
-				return INVALID_FILE;
+				//return INVALID_FILE;
+				break;
 			}
 			(*linked_list)->pts[col].col = col; // assigning each colomn to x
 			printf("---%d \n",(*linked_list)->pts[col].col);
@@ -146,6 +149,9 @@ int		create_tetriminos(int fd, tetris **linked_list)
 		// 	((*linked_list)->data)[row] = line;
 		// 	row++;
 		// }
+		tetris *add_node;
+		(*linked_list)->next = add_node;
+		*linked_list = add_node;
 	}
 	free(line);
 	return (0);
