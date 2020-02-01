@@ -1,68 +1,78 @@
-# **************************************************************************** #
+
+# **************************************************************************** #sr
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: oldurosi <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: vinguyen <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/09/16 16:14:07 by oldurosi          #+#    #+#              #
-#    Updated: 2019/10/15 22:34:47 by oldurosi         ###   ########.fr        #
+#    Created: 2019/09/30 16:39:05 by vinguyen          #+#    #+#              #
+#    Updated: 2019/09/30 17:10:55 by vinguyen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC	= gcc
-CFLAGS	= -Wall -Wextra -Werror
-AR	= ar rcs
-RANLIB = ranlib
-S-DIR = ./srcs/
-I-DIR = ./includes/
+#Library name
+NAME = libft.a
 
-NAME	= libft.a
-HEAD	= libft.h get_next_line.h
-SRCS	= ft_memset.c ft_bzero.c	\
-		  ft_memcpy.c ft_memccpy.c	\
-		  ft_memmove.c ft_memchr.c	\
-		  ft_memcmp.c ft_strlen.c	\
-		  ft_strdup.c ft_strcpy.c	\
-		  ft_strncpy.c ft_strcat.c	\
-		  ft_strncat.c ft_strlcat.c	\
-		  ft_strchr.c ft_strrchr.c	\
-		  ft_strstr.c ft_strnstr.c	\
-		  ft_strcmp.c ft_strncmp.c ft_atoi.c		\
-		  ft_isalpha.c ft_isdigit.c ft_isalnum.c	\
-		  ft_isascii.c ft_isprint.c ft_toupper.c	\
-		  ft_tolower.c ft_memalloc.c ft_memdel.c	\
-		  ft_strnew.c ft_strdel.c ft_strclr.c		\
-		  ft_striter.c ft_striteri.c ft_strmap.c	\
-		  ft_strmapi.c ft_strequ.c ft_strnequ.c		\
-		  ft_strsub.c ft_strjoin.c  ft_strtrim.c	\
-		  ft_strsplit.c ft_itoa.c ft_putchar.c		\
-		  ft_putstr.c ft_putendl.c ft_putnbr.c		\
-		  ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c	\
-		  ft_putnbr_fd.c ft_lstnew.c ft_lstdelone.c			\
-		  ft_lstdel.c ft_lstadd.c ft_lstiter.c ft_lstmap.c	\
-		  ft_lstfold.c ft_nbrlen.c ft_wordcount.c \
-		  ft_wordlen.c ft_iswspace.c ft_isspace.c \
-		  get_next_line.c
+#Folders containing *.c and *.h files
+SRC = .
+INCLUDES = .
 
-OBJS	= $(SRCS:.c=.o)
+#Source Files
+NAMES = ft_atoi ft_bzero ft_isalnum ft_isalpha ft_isascii ft_isdigit \
+		ft_isprint ft_itoa ft_lstadd ft_lstdel ft_lstdelone ft_lstiter \
+		ft_lstmap ft_lstnew ft_memalloc ft_memccpy ft_memchr ft_memcmp \
+		ft_memcpy ft_memdel ft_memmove ft_memset ft_putchar ft_putchar_fd \
+		ft_putendl ft_putendl_fd ft_putnbr ft_putnbr_fd ft_putstr \
+		ft_putstr_fd ft_strcat ft_strchr ft_strclr ft_strcmp ft_strcpy \
+		ft_strdel ft_strdup ft_strequ ft_striter ft_striteri ft_strjoin \
+		ft_strlcat ft_strlen ft_strmap ft_strmapi ft_strncat ft_strncmp \
+		ft_strncpy ft_strnequ ft_strnew ft_strnstr ft_strrchr ft_strsplit \
+		ft_strstr ft_strsub ft_strtrim ft_tolower ft_toupper \
+		ft_strstart ft_strend ft_iswhitespace ft_countwords ft_nbrlen \
+		get_next_line \
 
-.PHONY: all clean fclean re
+SRC_FILES = $(addsuffix .c, $(NAMES))
+OBJ_FILES = $(addsuffix .o, $(NAMES))
 
+#Compiler
+CC = gcc
+
+#Flags
+CFLAGS = -g -Wall -Wextra -Werror
+SANIT = -fsanitize=address
+
+#Baseline command that compiles all the files
+.PHONY: all
 all: $(NAME)
 
+#Command that compiles the *.c files, creates the library, and index the files
 $(NAME):
-	@$(CC) $(CFLAGS) -I ./includes/*.o -c ./srcs/*.c
-	@$(AR) $(NAME) $(OBJS)
-	@$(RANLIB) $(NAME)
-	@echo "[INFO] Library [$(NAME)] created!"
+	@$(CC) $(CFLAGS) -I $(INCLUDES) -c $(addprefix $(SRC)/, $(SRC_FILES))
+	@ar -rc $(NAME) $(OBJ_FILES)
+	@ranlib $(NAME)
 
+.PHONY: clean
 clean:
-	@rm -f $(OBJS)
-	@echo "[INFO] Objects removed!"
+	@/bin/rm -rf $(OBJ_FILES)
 
-fclean:
-	@rm -f $(NAME) $(OBJS)
-	@echo "[INFO] Library [$(NAME)] removed!"
+.PHONY: fclean
+fclean: clean
+	@if test -e $(NAME); then\
+		/bin/rm $(NAME);\
+	fi;
 
+#Command that cleans all the files and remakes the library
+.PHONY: re
 re: fclean all
+
+#Testing code
+.PHONY: test
+test:
+	@gcc fake.c -g $(SANIT)
+	@./a.out
+
+#Norminette
+.PHONY: Norminette
+norm:
+	@norminette *.c *.h
